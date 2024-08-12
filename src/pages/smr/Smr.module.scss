@@ -1,0 +1,27 @@
+.smr {
+  width: 100%;
+  padding: 0 10px;
+  border-left: 1px solid var(--color-borders);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.td {
+  padding: 12px;
+  color: var(--color-bright-text);
+  vertical-align: middle;
+}
+
+.add {
+  padding: 2px;
+  width: 55px;
+  display: flex;
+  align-items: center;
+}
+
+.add_wrapper {
+  margin-left: 20px;
+}
