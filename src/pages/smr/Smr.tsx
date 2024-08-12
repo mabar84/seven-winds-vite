@@ -1,27 +1,46 @@
-import {useGetTreeRowsQuery} from "../../services/base-api.ts";
+import {THead} from "../../components/THead";
+import {useSmr} from "./useSmr";
+import {RecursiveRow} from "../../components/RecursiveRow";
+import {InputsForForm} from "../../components/InputsForForm";
+
+import s from './Smr.module.scss'
 
 export const Smr = () => {
-    const {data} = useGetTreeRowsQuery()
-    console.log(data)
+    const {
+        data,
+        levelForNewRow,
+        showAddNewRow,
+        updatingRowId,
+        control,
+        onSubmitSmr,
+        addRow,
+        removeRow,
+        setShowAddNewRow,
+        setUpdatingRow,
+    } = useSmr()
+
+
+
     return (
-        <div>
-            <p>
-                {data && data[0].rowName}
-                {data && data[0].salary}
-                {data && data[0].equipmentCosts}
-                {data && data[0].overheads}
-                {data && data[0].estimatedProfit}
+        <form className={s.smr} onSubmit={onSubmitSmr}>
+            <table className={s.table}>
+                <THead/>
 
+                <tbody>
+                {data?.map((row) => (
+                    <RecursiveRow
+                        key={row.id} addRow={addRow} removeRow={removeRow}
+                        setUpdatingRow={setUpdatingRow} setShowAddNewRow={setShowAddNewRow}
+                        control={control} row={row} updatingRowId={updatingRowId}
+                        level={0}
+                    />))
+                }
 
-            </p>
-            <p>123</p>
+                {showAddNewRow && <InputsForForm level={levelForNewRow} control={control}/>}
+                </tbody>
+            </table>
 
-
-
-
-            <button>добавить ченить</button>
-        </div>
-    );
+            <input type={'submit'} style={{display: "none"}}/>
+        </form>
+    )
 };
-
-

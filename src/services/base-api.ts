@@ -1,13 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {TreeResponse} from "./types.ts";
 
-const ID = 137658;
-
-
-// {
-//     "id": 137658,
-//     "rowName": "309912d6-aae0-4fb7-a792-90b4bc2a4a4b"
-// }
+import {ID} from "../constants/entityId";
+import {TreeResponse} from "./types";
 
 
 export const baseApi = createApi({
@@ -16,12 +10,39 @@ export const baseApi = createApi({
     }),
     endpoints: builder => {
         return {
-            getTreeRows: builder.query<TreeResponse[], void>({
+            getTreeRows: builder.query<TreeResponse, void>({
                 query: () => `/v1/outlay-rows/entity/${ID}/row/list`,
             }),
+            createRow: builder.mutation({
+                query: (body) => {
+                    return {
+                        body,
+                        method: 'POST',
+                        url: `/v1/outlay-rows/entity/${ID}/row/create`,
+                    }
+                }
+            }),
+            deleteRow: builder.mutation({
+                query: (rID) => {
+                    return {
+                        method: 'DELETE',
+                        url: `/v1/outlay-rows/entity/${ID}/row/${rID}/delete`,
+                    }
+                }
+            }),
+            updateRow: builder.mutation({
+                query: (args) => {
+                    const {rID,...body} = args;
+                    return {
+                        body,
+                        method: 'POST',
+                        url: `/v1/outlay-rows/entity/${ID}/row/${rID}/update`,
+                    }
+                }
+            })
         };
     },
     reducerPath: 'baseApi',
 });
 
-export const {useGetTreeRowsQuery} = baseApi;
+export const {useGetTreeRowsQuery, useCreateRowMutation, useDeleteRowMutation,useUpdateRowMutation} = baseApi;
